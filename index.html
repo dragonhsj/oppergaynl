@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OPPERGAY.NL // SECTOR_7</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👾</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Orbitron:wght@500;700;900&family=Noto+Sans+JP:wght@300;500;700&display=swap" rel="stylesheet">
@@ -963,6 +964,52 @@
     display: block;
   }
 
+  /* ========== Stamps ========== */
+  .stamps-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .stamps-grid a.stamp {
+    display: inline-block;
+    width: 88px;
+    height: 31px;
+    border: 1px solid var(--border);
+    background: var(--bg-2);
+    overflow: hidden;
+    position: relative;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .stamps-grid a.stamp img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    image-rendering: pixelated;
+  }
+
+  .stamps-grid a.stamp:hover {
+    border-color: var(--cyan);
+    box-shadow: 0 0 12px var(--cyan-glow);
+    transform: translateY(-2px);
+  }
+
+  .stamps-grid a.stamp.broken {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--ink-faint);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
   /* ========== Blog ========== */
   .blog-list { list-style: none; padding: 0; margin: 0; }
   .blog-list li {
@@ -1329,7 +1376,7 @@
       </div>
       <div class="panel welcome">
         <div class="portrait">
-          <img src="your-photo.jpg" alt="Dragonhj" onerror="this.style.display='none'; this.parentElement.textContent='[NO_IMG]';">
+          <img src="profile.jpg" alt="Dragonhj" onerror="this.style.display='none'; this.parentElement.textContent='[NO_IMG]';">
         </div>
         <div>
           <p>Hi! I'm <strong style="color: var(--magenta); text-shadow: 0 0 6px var(--magenta-glow);">DRAGONHJ</strong> — i like to be creative and do stupid things with the internet.</p>
@@ -1437,10 +1484,24 @@
       </div>
     </section>
 
+    <!-- STAMPS -->
+    <section id="stamps">
+      <div class="section-head">
+        <span class="prompt">[06]</span>
+        <h2>stamps<em>_wall</em></h2>
+        <span class="jp-tag">// スタンプ</span>
+      </div>
+      <div class="panel">
+        <div class="stamps-grid" id="stamps-grid">
+          <span class="placeholder">[ no stamps yet ]</span>
+        </div>
+      </div>
+    </section>
+
     <!-- BLOG -->
     <section id="blog">
       <div class="section-head">
-        <span class="prompt">[06]</span>
+        <span class="prompt">[07]</span>
         <h2>system<em>_log</em></h2>
         <span class="jp-tag">// 日記</span>
       </div>
@@ -1468,6 +1529,7 @@
       <li><a href="#projects">projects</a></li>
       <li><a href="#gallery">visual_cache</a></li>
       <li><a href="#now-playing">audio_stream</a></li>
+      <li><a href="#stamps">stamps_wall</a></li>
       <li><a href="#blog">system_log</a></li>
     </ul>
 
@@ -1960,6 +2022,35 @@ async function fetchLastFm() {
 
 fetchLastFm();
 setInterval(fetchLastFm, 30_000);
+
+/* ===== STAMPS =====
+   88x31 buttons. Paste URLs below. Each entry:
+   { img: 'image url', href: 'link target', title: 'tooltip' }
+   `href` is optional — omit for non-clickable stamps.
+============================================================== */
+const STAMPS = [
+  // { img: 'https://example.com/button.gif', href: 'https://example.com/', title: 'example' },
+];
+
+const stampsGrid = document.getElementById('stamps-grid');
+function renderStamps() {
+  if (!STAMPS.length) {
+    stampsGrid.innerHTML = '<span class="placeholder">[ no stamps yet ]</span>';
+    return;
+  }
+  stampsGrid.innerHTML = STAMPS.map(s => {
+    const img = escapeHtml(s.img || '');
+    const href = s.href ? escapeHtml(s.href) : '';
+    const title = escapeHtml(s.title || '');
+    const inner = `<img src="${img}" alt="${title}" title="${title}" loading="lazy" onerror="this.parentElement.classList.add('broken'); this.replaceWith(document.createTextNode('[BROKEN]'));">`;
+    return href
+      ? `<a class="stamp" href="${href}" target="_blank" rel="noopener" title="${title}">${inner}</a>`
+      : `<span class="stamp" title="${title}">${inner}</span>`;
+  }).join('');
+  bindCursorHovers();
+  bindSounds();
+}
+renderStamps();
 
 /* ===== HIT COUNTER (using counterapi.dev — free, no signup) ===== */
 const hitCountEl = document.getElementById('hit-count');
