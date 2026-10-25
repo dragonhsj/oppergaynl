@@ -350,9 +350,10 @@
   .hero h1.glitch::after {
     content: attr(data-text);
     position: absolute;
-    top: 0; left: 0;
+    inset: 0;
     width: 100%;
     overflow: hidden;
+    pointer-events: none;
   }
 
   .hero h1.glitch::before {
@@ -427,6 +428,143 @@
     letter-spacing: 0.05em;
     margin-top: 4px;
   }
+
+  /* ========== Current thought ========== */
+  .thought-panel {
+    margin: -28px 0 18px;
+    padding: 16px 20px;
+    border-color: var(--border-cy);
+    background: rgba(0, 229, 255, 0.025);
+    box-shadow: inset 0 0 24px rgba(0, 229, 255, 0.025);
+  }
+
+  .thought-panel::before,
+  .thought-panel::after { border-color: var(--cyan); }
+
+  .thought-label {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    color: var(--cyan);
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .thought-label .signal { color: var(--green); }
+
+  .thought-text {
+    margin: 10px 0 0;
+    color: var(--ink);
+    font-size: 0.95rem;
+    line-height: 1.55;
+    white-space: pre-line;
+  }
+
+  .thought-text::before {
+    content: '> ';
+    color: var(--magenta);
+    text-shadow: 0 0 6px var(--magenta-glow);
+  }
+
+  .fixes-panel {
+    margin: 0 0 56px;
+    padding: 13px 20px;
+    border-color: var(--border);
+  }
+
+  .fixes-panel::before,
+  .fixes-panel::after { border-color: var(--magenta); }
+
+  .fixes-title {
+    margin: 0 0 8px;
+    color: var(--magenta);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .fixes-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .fixes-list li {
+    color: var(--ink-dim);
+    font-size: 0.82rem;
+  }
+
+  .fixes-list li::before {
+    content: '> ';
+    color: var(--green);
+  }
+
+  .fixes-list .fix-status {
+    color: var(--cyan);
+    margin-right: 8px;
+  }
+
+  .changelog-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .changelog-list li {
+    display: grid;
+    grid-template-columns: 92px 1fr;
+    gap: 16px;
+    padding: 9px 0;
+    border-bottom: 1px dashed var(--border);
+    color: var(--ink-dim);
+    font-size: 0.82rem;
+  }
+
+  .changelog-list li:last-child { border-bottom: none; }
+
+  .changelog-list time {
+    color: var(--amber);
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+  }
+
+  .changelog-list .change::before {
+    content: '> ';
+    color: var(--magenta);
+  }
+
+  .records-list {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .records-list li {
+    padding: 12px 14px;
+    border-left: 2px solid var(--cyan);
+    background: rgba(0, 229, 255, 0.025);
+    color: var(--ink-dim);
+    font-size: 0.82rem;
+  }
+
+  .records-list .record-id {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--magenta);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+  }
+
+  .records-list .record-secret {
+    display: none;
+    border-left-color: var(--amber);
+    background: rgba(255, 181, 71, 0.04);
+  }
+
+  .records-list .record-secret.revealed { display: block; }
 
   /* ========== Section headers (terminal-style) ========== */
   section {
@@ -678,372 +816,6 @@
     display: block;
   }
 
-  /* ========== Photo wheel ========== */
-  .wheel-stage {
-    position: relative;
-    height: 320px;
-    perspective: 1200px;
-    margin: 30px auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .wheel {
-    position: relative;
-    width: 200px; height: 200px;
-    transform-style: preserve-3d;
-    animation: spin 35s linear infinite;
-  }
-
-  .wheel:hover { animation-play-state: paused; }
-
-  .wheel .slot {
-    position: absolute; inset: 0;
-    width: 200px; height: 200px;
-    border: 1px solid var(--magenta);
-    background: linear-gradient(135deg, var(--bg-2), var(--bg-3));
-    display: flex; align-items: center; justify-content: center;
-    color: var(--ink-faint);
-    font-family: var(--mono);
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    box-shadow: 0 0 30px var(--magenta-glow), inset 0 0 30px rgba(255, 45, 146, 0.05);
-    overflow: hidden;
-  }
-
-  .wheel .slot::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: repeating-linear-gradient(0deg, transparent 0, transparent 2px, rgba(255, 45, 146, 0.05) 3px);
-    pointer-events: none;
-  }
-
-  .wheel .slot img { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.1) saturate(1.2); }
-
-  .wheel .slot:nth-child(1) { transform: rotateY(0deg)   translateZ(220px); }
-  .wheel .slot:nth-child(2) { transform: rotateY(60deg)  translateZ(220px); }
-  .wheel .slot:nth-child(3) { transform: rotateY(120deg) translateZ(220px); }
-  .wheel .slot:nth-child(4) { transform: rotateY(180deg) translateZ(220px); }
-  .wheel .slot:nth-child(5) { transform: rotateY(240deg) translateZ(220px); }
-  .wheel .slot:nth-child(6) { transform: rotateY(300deg) translateZ(220px); }
-
-  @keyframes spin { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
-
-  .wheel-hint {
-    text-align: center;
-    color: var(--ink-faint);
-    font-family: var(--mono);
-    font-size: 0.8rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-top: -10px;
-  }
-
-  /* ========== Now playing ========== */
-  .now-playing {
-    background: var(--panel);
-    border: 1px solid var(--cyan);
-    padding: 18px 24px;
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    box-shadow: 0 0 16px rgba(0, 229, 255, 0.15);
-    position: relative;
-  }
-
-  .np-cover {
-    width: 72px;
-    height: 72px;
-    flex-shrink: 0;
-    border: 1px solid var(--cyan);
-    background: linear-gradient(135deg, var(--bg-2), var(--bg-3));
-    box-shadow: 0 0 12px var(--cyan-glow), inset 0 0 12px rgba(0, 229, 255, 0.08);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--ink-faint);
-    font-family: var(--mono);
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    overflow: hidden;
-    position: relative;
-  }
-  .np-cover::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(0deg, transparent 0, transparent 2px, rgba(0, 229, 255, 0.06) 3px);
-    pointer-events: none;
-  }
-  .np-cover img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    filter: contrast(1.1) saturate(1.2);
-    display: block;
-  }
-
-  .np-info { min-width: 0; flex: 1; }
-
-  .np-tags {
-    margin-top: 8px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-  .np-tags .tag {
-    font-family: var(--mono);
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--purple);
-    border: 1px solid var(--border);
-    padding: 1px 7px;
-    background: rgba(166, 77, 255, 0.06);
-    text-shadow: 0 0 4px var(--purple-glow);
-  }
-
-  .np-bio {
-    margin-top: 10px;
-    padding: 12px 16px;
-    background: var(--panel-2);
-    border: 1px solid var(--border);
-    border-left: 2px solid var(--cyan);
-    font-size: 0.82rem;
-    color: var(--ink-dim);
-    line-height: 1.6;
-    font-style: italic;
-    display: none;
-  }
-  .np-bio.visible { display: block; }
-  .np-bio .stats {
-    display: block;
-    margin-top: 8px;
-    font-family: var(--mono);
-    font-size: 0.7rem;
-    color: var(--ink-faint);
-    font-style: normal;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-  .np-bio .stats .num {
-    color: var(--amber);
-    text-shadow: 0 0 4px rgba(255, 181, 71, 0.4);
-  }
-
-  .now-playing::before {
-    content: '';
-    position: absolute;
-    top: -1px; left: -1px;
-    width: 10px; height: 10px;
-    border-top: 1px solid var(--cyan);
-    border-left: 1px solid var(--cyan);
-  }
-  .now-playing::after {
-    content: '';
-    position: absolute;
-    bottom: -1px; right: -1px;
-    width: 10px; height: 10px;
-    border-bottom: 1px solid var(--cyan);
-    border-right: 1px solid var(--cyan);
-  }
-
-  .now-playing .indicator {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    flex-shrink: 0;
-  }
-
-  .now-playing .bar {
-    width: 3px;
-    background: var(--cyan);
-    box-shadow: 0 0 6px var(--cyan-glow);
-    animation: eq 1s ease-in-out infinite;
-  }
-  .now-playing .bar:nth-child(1) { height: 14px; animation-delay: 0s; }
-  .now-playing .bar:nth-child(2) { height: 20px; animation-delay: 0.2s; }
-  .now-playing .bar:nth-child(3) { height: 10px; animation-delay: 0.4s; }
-  .now-playing .bar:nth-child(4) { height: 18px; animation-delay: 0.1s; }
-
-  @keyframes eq {
-    0%, 100% { transform: scaleY(1); }
-    50% { transform: scaleY(0.4); }
-  }
-
-  .now-playing .label {
-    font-family: var(--mono);
-    font-size: 0.7rem;
-    color: var(--cyan);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    margin-bottom: 2px;
-  }
-
-  .now-playing .track {
-    color: var(--ink-dim);
-  }
-
-  .favorites {
-    margin-top: 16px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 10px;
-  }
-
-  .favorites .fav {
-    padding: 10px;
-    background: var(--panel-2);
-    border-left: 2px solid var(--purple);
-    font-size: 0.85rem;
-    color: var(--ink-dim);
-    display: grid;
-    grid-template-columns: 56px 1fr;
-    gap: 12px;
-    align-items: center;
-  }
-
-  .favorites .fav .cover {
-    width: 56px;
-    height: 56px;
-    background: linear-gradient(135deg, var(--bg-2), var(--bg-3));
-    border: 1px solid var(--purple);
-    box-shadow: 0 0 12px var(--purple-glow), inset 0 0 12px rgba(166, 77, 255, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--ink-faint);
-    font-family: var(--mono);
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    overflow: hidden;
-    position: relative;
-    flex-shrink: 0;
-  }
-
-  .favorites .fav .cover::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(0deg, transparent 0, transparent 2px, rgba(166, 77, 255, 0.06) 3px);
-    pointer-events: none;
-  }
-
-  .favorites .fav .cover img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    filter: contrast(1.1) saturate(1.2);
-  }
-
-  .favorites .fav .info {
-    min-width: 0;
-    overflow: hidden;
-  }
-
-  .favorites .fav strong {
-    display: block;
-    color: var(--ink);
-    font-weight: 500;
-    font-size: 0.9rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .favorites .fav .artist {
-    color: var(--ink-dim);
-    font-size: 0.8rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: block;
-  }
-
-  /* ========== stamps ========== */
-  .stamps-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: flex-start;
-  }
-
-  .stamps-grid a.stamp {
-    display: inline-block;
-    width: 88px;
-    height: 31px;
-    border: 1px solid var(--border);
-    background: var(--bg-2);
-    overflow: hidden;
-    position: relative;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-  }
-
-  .stamps-grid a.stamp img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    image-rendering: pixelated;
-  }
-
-  .stamps-grid a.stamp:hover {
-    border-color: var(--cyan);
-    box-shadow: 0 0 12px var(--cyan-glow);
-    transform: translateY(-2px);
-  }
-
-  .stamps-grid a.stamp.broken {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--mono);
-    font-size: 0.6rem;
-    color: var(--ink-faint);
-    text-decoration: none;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-
-  /* ========== Blog ========== */
-  .blog-list { list-style: none; padding: 0; margin: 0; }
-  .blog-list li {
-    padding: 12px 0;
-    border-bottom: 1px dashed var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-  .blog-list li:last-child { border-bottom: none; }
-  .blog-list a {
-    color: var(--cyan);
-    text-decoration: none;
-    font-family: var(--mono);
-    font-size: 0.95rem;
-    transition: all 0.2s;
-  }
-  .blog-list a::before {
-    content: '> ';
-    color: var(--magenta);
-  }
-  .blog-list a:hover {
-    color: var(--magenta);
-    text-shadow: 0 0 8px var(--magenta-glow);
-  }
-  .blog-list time {
-    color: var(--ink-faint);
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-  }
-
   /* ========== Sidebar / Terminal panel ========== */
   aside {
     position: sticky;
@@ -1165,17 +937,59 @@
     .kanji-deco.k1 { font-size: 6rem; }
     .kanji-deco.k2 { font-size: 7rem; }
     .kanji-deco.k3 { display: none; }
+    .hero::before { display: none; }
+    .changelog-list li { grid-template-columns: 1fr; gap: 2px; }
   }
 
   ::selection { background: var(--magenta); color: var(--bg-0); }
 
-  /* ========== Mood Indicator ========== */
-  .mood-box {
-    margin-top: 20px;
-    padding: 12px;
-    border: 1px dashed var(--border-cy);
-    background: rgba(0, 229, 255, 0.03);
-    font-size: 0.78rem;
+  .hero::before {
+    content: 'PERSONAL_NODE // 07';
+    position: absolute;
+    top: 38px;
+    right: 0;
+    color: var(--ink-faint);
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.16em;
+    writing-mode: vertical-rl;
+    opacity: 0.8;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--magenta), var(--cyan), transparent 78%);
+    box-shadow: 0 0 10px var(--cyan-glow);
+    transform-origin: left;
+    animation: signalSweep 6s ease-in-out infinite;
+  }
+
+  @keyframes signalSweep {
+    0%, 100% { transform: scaleX(0.18); opacity: 0.45; }
+    50% { transform: scaleX(1); opacity: 1; }
+  }
+
+  .panel {
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  }
+
+  .panel:hover {
+    border-color: var(--cyan);
+    box-shadow: 0 0 18px rgba(0, 229, 255, 0.1), inset 0 0 20px rgba(0, 229, 255, 0.025);
+  }
+
+  .section-head .prompt {
+    display: inline-block;
+    min-width: 38px;
+    padding: 1px 6px;
+    border: 1px solid var(--border-mag);
+    background: rgba(255, 45, 146, 0.06);
+    text-align: center;
   }
 
   .mood-box .mood-label {
@@ -1351,7 +1165,7 @@
         > initializing user_terminal_v2.4...<span class="cursor"></span>
       </div>
 
-      <h1 data-text="OPPERGAY">
+      <h1 data-text="OPPERGAY.NL">
         <span class="accent">OPPER</span>GAY<span class="accent">.NL</span>
       </h1>
       <p class="subtitle">
@@ -1367,6 +1181,26 @@
       </div>
     </header>
 
+    <!-- CURRENT THOUGHT -->
+    <div class="panel thought-panel" aria-live="polite">
+      <div class="thought-label">
+        <span>// current_thought</span>
+        <span class="signal">SIGNAL: LIVE</span>
+      </div>
+      <p class="thought-text" id="current-thought">[ retrieving thought... ]</p>
+    </div>
+
+    <!-- RECENT FIXES -->
+    <div class="panel fixes-panel">
+      <h2 class="fixes-title">// recent-fixes</h2>
+      <ul class="fixes-list">
+        <li><span class="fix-status">[NEW]</span> added current thought panel</li>
+        <li><span class="fix-status">[NEW]</span> added recent fixes panel</li>
+        <li><span class="fix-status">[UPD]</span> added projects to projects_log</li>
+        <li><span class="fix-status">[REM]</span> removed audio stream integration</li>
+      </ul>
+    </div>
+
     <!-- WELCOME / BIO -->
     <section id="about">
       <div class="section-head">
@@ -1380,6 +1214,7 @@
         </div>
         <div>
           <p>Hi! I'm <strong style="color: var(--magenta); text-shadow: 0 0 6px var(--magenta-glow);">DRAGONHJ</strong> — i like to be creative and do stupid things with the internet.</p>
+
           <p>I code small simple things. still learning!</p>
           <p class="placeholder">[ MORE_DATA_PENDING ]</p>
         </div>
@@ -1413,106 +1248,58 @@
       </div>
       <div class="projects" id="projects-grid">
         <div class="project">
-          <div class="label">PROJ_001</div>
-          <h3>[ this website!! ]</h3>
-          <p class="placeholder">[ small html website for fun ]</p>
+          <a class="proj-link" href="https://oppergay.nl" target="_blank" rel="noopener">
+            <div class="label">PROJ_001</div>
+            <h3>[ this website!! ]</h3>
+            <p class="placeholder">[ small html website for fun ]</p>
+            <div class="meta-line"><span class="lang">HTML / CSS / JS</span><span class="stars">ONLINE</span></div>
+          </a>
         </div>
         <div class="project">
-          <div class="label">PROJ_002</div>
-          <h3>[ the search ]</h3>
-          <p class="placeholder">[ a little puzzle game made in gamemaker ]</p>
-        </div>
-        <div class="project">
-          <div class="label">PROJ_003</div>
-          <h3>[ project_name ]</h3>
-          <p class="placeholder">[ short description ]</p>
-        </div>
-        <div class="project">
-          <div class="label">PROJ_004</div>
-          <h3>[ project_name ]</h3>
-          <p class="placeholder">[ short description ]</p>
+          <a class="proj-link" href="https://emrekadirtiren.itch.io/the-search" target="_blank" rel="noopener">
+            <div class="label">PROJ_002</div>
+            <h3>[ the search ]</h3>
+            <p class="placeholder">[ a little puzzle game made in gamemaker ]</p>
+            <div class="meta-line"><span class="lang">GAME MAKER</span><span class="stars">ITCH.IO</span></div>
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- PHOTO WHEEL -->
-    <section id="gallery">
+    <!-- LOG RECORDS -->
+    <section id="log-records">
       <div class="section-head">
         <span class="prompt">[04]</span>
-        <h2>visual<em>_cache</em></h2>
-        <span class="jp-tag">// 写真</span>
-      </div>
-      <div class="wheel-stage">
-        <div class="wheel">
-          <div class="slot">[IMG_01]</div>
-          <div class="slot">[IMG_02]</div>
-          <div class="slot">[IMG_03]</div>
-          <div class="slot">[IMG_04]</div>
-          <div class="slot">[IMG_05]</div>
-          <div class="slot">[IMG_06]</div>
-        </div>
-      </div>
-      <p class="wheel-hint">// hover_to_pause</p>
-    </section>
-
-    <!-- NOW PLAYING -->
-    <section id="now-playing">
-      <div class="section-head">
-        <span class="prompt">[05]</span>
-        <h2>audio<em>_stream</em></h2>
-        <span class="jp-tag">// 音楽</span>
-      </div>
-      <div class="now-playing" id="np-card">
-        <div class="indicator" id="np-indicator">
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-        </div>
-        <div class="np-cover" id="np-cover"><span>[ART]</span></div>
-        <div class="np-info">
-          <div class="label" id="np-label">NOW_PLAYING</div>
-          <div class="track placeholder" id="np-track">[ silent · no signal ]</div>
-          <div class="np-tags" id="np-tags"></div>
-        </div>
-      </div>
-      <div class="np-bio" id="np-bio"></div>
-
-      <h3 style="font-family: var(--display); font-weight: 500; color: var(--magenta); margin: 24px 0 10px; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.15em;">// RECENT_TRACKS</h3>
-      <div class="favorites" id="recent-tracks">
-        <div class="fav placeholder">[ loading... ]</div>
-      </div>
-    </section>
-
-    <!-- STAMPS -->
-    <section id="stamps">
-      <div class="section-head">
-        <span class="prompt">[06]</span>
-        <h2>stamps<em>_wall</em></h2>
-        <span class="jp-tag">// スタンプ</span>
+        <h2>log<em>_records</em></h2>
+        <span class="jp-tag">// 記録</span>
       </div>
       <div class="panel">
-        <div class="stamps-grid" id="stamps-grid">
-          <span class="placeholder">[ no stamps yet ]</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- BLOG -->
-    <section id="blog">
-      <div class="section-head">
-        <span class="prompt">[07]</span>
-        <h2>system<em>_log</em></h2>
-        <span class="jp-tag">// 日記</span>
-      </div>
-      <div class="panel">
-        <ul class="blog-list">
-          <li><a href="#" class="placeholder">[ first post title ]</a><time>[ DATE ]</time></li>
-          <li><a href="#" class="placeholder">[ second post title ]</a><time>[ DATE ]</time></li>
-          <li><a href="#" class="placeholder">[ third post title ]</a><time>[ DATE ]</time></li>
+        <ul class="records-list">
+          <li><span class="record-id">LOG_001 // FIRST BOOT</span>sector_7 came online. nobody remembers starting it.</li>
+          <li><span class="record-id">LOG_002 // MAINTENANCE</span>one bug was fixed. three unrelated systems improved.</li>
+          <li><span class="record-id">LOG_003 // OPERATOR STATUS</span>the operator continues to maintain the system. results remain inconclusive.</li>
+          <li><span class="record-id">LOG_004 // ARCHIVE INCIDENT</span>docker-compose.yml.txt is not a typo. it is a cry for help. i'm looking at you emre.</li>
+          <li class="record-secret" id="secret-record"><span class="record-id">LOG_005 // ACCESS RECOVERED</span>you were not supposed to find this record. please act surprised.</li>
         </ul>
       </div>
     </section>
+
+    <!-- CHANGELOG -->
+    <section id="changelog">
+      <div class="section-head">
+        <span class="prompt">[05]</span>
+        <h2>change<em>_log</em></h2>
+        <span class="jp-tag">// 更新履歴</span>
+      </div>
+      <div class="panel">
+        <ul class="changelog-list">
+          <li><time datetime="2026-10-25">2026.10.25</time><span class="change">added current thought panel</span></li>
+          <li><time datetime="2026-10-25">2026.10.25</time><span class="change">added projects to projects_log</span></li>
+          <li><time datetime="2026-10-25">2026.10.25</time><span class="change">removed audio stream integration</span></li>
+        </ul>
+      </div>
+    </section>
+
   </main>
 
   <!-- SIDEBAR / Terminal -->
@@ -1527,10 +1314,8 @@
       <li><a href="#about">about_me</a></li>
       <li><a href="#facts">quick_facts</a></li>
       <li><a href="#projects">projects</a></li>
-      <li><a href="#gallery">visual_cache</a></li>
-      <li><a href="#now-playing">audio_stream</a></li>
-      <li><a href="#stamps">stamps_wall</a></li>
-      <li><a href="#blog">system_log</a></li>
+      <li><a href="#log-records">log_records</a></li>
+      <li><a href="#changelog">change_log</a></li>
     </ul>
 
     <h3>// external</h3>
@@ -1584,9 +1369,91 @@
    Or just put the date as null to skip the "since" timer.
 ============================ */
 const MOOD = {
-  text: 'sleeping',         // <-- change me
-  since: '2026-05-16 12:00',          // <-- and me (or set to null)
+  text: 'the situation remains ongoing',
+  since: '2026-10-25 12:37',
 };
+
+/* ===== CURRENT THOUGHT ===== */
+const thoughts = [
+  'i should be working right now',
+  'the projects are looking at me',
+  'this feels threatening',
+  'the fridge offered no solutions',
+  'i opened vscode\nthat was apparently enough effort for today',
+  'coffee reserves remain critical',
+  'i fixed a bug\nnobody knows why\nincluding me',
+  "today's plan:\n1. code\n2. ????\n3. accidental nap",
+  'if the code works\ndo not ask questions',
+  'there is probably a fish\nwith better debugging skills than me',
+  'sector_7 is operating normally\nthis is concerning',
+  'i made a todo list\nthe todo list made another todo list',
+  'the lights in sector_3\nshould not be on',
+  'i reorganized my folders\nnothing can be found anymore',
+  'i have achieved digital minimalism\nby losing everything',
+  'the compiler fears me\nfor good reason',
+  'there is a non-zero chance\nthis website is haunted',
+  'sleep is a tomorrow problem\ntomorrow keeps disagreeing',
+  'i came here to fix one thing\nthe thing multiplied',
+  'operator status:\nconfused but trying',
+  'i wonder who reads these\nhello if it is you',
+  'the code is held together\nby hope\nand one stack overflow post',
+  'the stack overflow post is gone\nwe are on our own now',
+  'breaking production\nbuilds character',
+  'i should learn rust\nor finish literally anything else first',
+  'memory leak detected\nmight be in the code\nmight be me',
+  'every bug is a feature\nuntil someone notices',
+  'the system passed all tests\nwhich means i forgot to write some tests',
+  'i clicked deploy\nmay the gods decide the outcome',
+  'the website still works\nthis is suspicious',
+  'i started a side project\nit is now a main project',
+  'i forgot the original project',
+  'important update:\nstill tired',
+  'the mission was simple\nthe mission is no longer simple',
+  'i renamed a variable\nthe bug disappeared\ni refuse to investigate further',
+  'sometimes i wonder\nwhat the fish know',
+  'sector_7 remains operational\nsomehow',
+  'i added one feature\nthe feature adopted three more features',
+  'the coffee machine understands\nuptime better than i do',
+  'the website contains secrets\neven i do not know where they are',
+  'i opened the cloudflare dashboard\nimmediately regretted it',
+  'i forgot how this website works\nagain',
+  'current objective:\nremember past objective',
+  'the vibes are good\nthe architecture is not',
+  'if nobody reports bugs\ndo they exist',
+  'i have chosen optimism',
+  'the terminal aesthetic\nadds at least 20 horsepower',
+  'i thought i had a plan\nthe plan has escaped containment',
+  'there is no emergency\nthere is only unexpected development',
+  'the sector is stable\nplease do not verify this claim',
+  'i am once again asking\nwhere i put that file',
+  'today feels like a side quest\nthe side quest became lore',
+  'the site is held together\nby duct tape and determination',
+  'everything is temporary\nexcept technical debt',
+  'i should really document things\nfuture me deserves better',
+  'future me can figure it out',
+  'the browser has too many tabs\nand all of them are important',
+  'i named the backup final_final\nthis is now a historical artifact',
+  'the error message was technically correct\ni still feel betrayed',
+  'one more small change\nthen i will stop',
+  'i have entered the\nconfiguration file dimension'
+];
+
+const rareThoughts = [
+  'WARNING\n\ndo not feed the fish',
+  'UNAUTHORIZED THOUGHT DETECTED',
+  'who is reading this',
+  'ACCESS LOG RECOVERED\n\n[REDACTED]',
+  'HELLO',
+  'hey friends'
+];
+
+function applyCurrentThought() {
+  const thoughtEl = document.getElementById('current-thought');
+  const pool = Math.random() < 0.04 ? rareThoughts : thoughts;
+  thoughtEl.textContent = pool[Math.floor(Math.random() * pool.length)];
+}
+
+applyCurrentThought();
 
 const moodValueEl  = document.getElementById('mood-value');
 const moodSinceEl  = document.getElementById('mood-since');
@@ -1623,7 +1490,9 @@ setInterval(applyMood, 60_000);
 
 /* ===== EASTER EGG ===== */
 const easterCode = 'kluizen';
+const loreCode = 'sector3';
 const easterOverlay = document.getElementById('easter-overlay');
+const secretRecord = document.getElementById('secret-record');
 let easterBuffer = '';
 
 window.addEventListener('keydown', (e) => {
@@ -1636,7 +1505,7 @@ window.addEventListener('keydown', (e) => {
   }
 
   if (e.key.length === 1) {
-    easterBuffer = (easterBuffer + e.key.toLowerCase()).slice(-easterCode.length);
+    easterBuffer = (easterBuffer + e.key.toLowerCase()).slice(-Math.max(easterCode.length, loreCode.length));
     if (easterBuffer === easterCode) {
       easterOverlay.classList.add('active');
       // celebratory beep sequence
@@ -1645,6 +1514,9 @@ window.addEventListener('keydown', (e) => {
           setTimeout(() => beep(freq, 0.12, 'square', 0.04), i * 100);
         });
       } catch (err) { /* sound not loaded yet */ }
+      easterBuffer = '';
+    } else if (easterBuffer === loreCode) {
+      secretRecord.classList.add('revealed');
       easterBuffer = '';
     }
   }
@@ -1845,171 +1717,11 @@ function bindSounds() {
 window.addEventListener('pointerdown', () => ensureAudioCtx(), { once: true });
 bindSounds();
 
-/* ===== LAST.FM (via backend proxy) ===== */
-const LASTFM_BACKEND = 'https://oppergaynlbackend.dragon-hasjam.workers.dev/';
-
-const npLabel = document.getElementById('np-label');
-const npTrack = document.getElementById('np-track');
-const npIndicator = document.getElementById('np-indicator');
-const npCover = document.getElementById('np-cover');
-const npTags = document.getElementById('np-tags');
-const npBio = document.getElementById('np-bio');
-const recentTracksEl = document.getElementById('recent-tracks');
-
-function setCover(url) {
-  if (url) {
-    npCover.innerHTML = `<img src="${escapeHtml(url)}" alt="" onerror="this.parentElement.innerHTML='<span>[ART]</span>';">`;
-  } else {
-    npCover.innerHTML = '<span>[ART]</span>';
-  }
-}
-
-function truncateBio(txt) {
-  if (!txt) return '';
-  let s = String(txt).replace(/\s+/g, ' ').trim();
-  if (s.length > 240) s = s.slice(0, 237).trimEnd() + '...';
-  return s;
-}
-
-function renderArtistInfo(info) {
-  if (!info) {
-    npTags.innerHTML = '';
-    npBio.classList.remove('visible');
-    npBio.innerHTML = '';
-    return;
-  }
-  const tags = (info.tags || []).slice(0, 4);
-  npTags.innerHTML = tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('');
-  const bio = truncateBio(info.summary);
-  if (bio) {
-    const listeners = Number(info.listeners) || 0;
-    const playcount = Number(info.playcount) || 0;
-    const stats = (listeners || playcount)
-      ? `<span class="stats">// listeners <span class="num">${listeners.toLocaleString()}</span> · plays <span class="num">${playcount.toLocaleString()}</span></span>`
-      : '';
-    npBio.innerHTML = escapeHtml(bio) + stats;
-    npBio.classList.add('visible');
-  } else {
-    npBio.classList.remove('visible');
-    npBio.innerHTML = '';
-  }
-}
-
 function escapeHtml(str) {
   return String(str).replace(/[&<>"']/g, ch => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
   }[ch]));
 }
-
-function renderRecent(tracks) {
-  if (!tracks.length) {
-    recentTracksEl.innerHTML = '<div class="fav placeholder">[ no recent tracks ]</div>';
-    return;
-  }
-  recentTracksEl.innerHTML = tracks.map(t => {
-    const name = escapeHtml(t.name || '?');
-    const artist = escapeHtml(t.artist || '?');
-    const img = t.image || '';
-    const href = t.url || '#';
-    const cover = img
-      ? `<img src="${escapeHtml(img)}" alt="" onerror="this.style.display='none'; this.parentElement.textContent='[ART]';">`
-      : '[ART]';
-    return `
-      <a class="fav proj-link" href="${escapeHtml(href)}" target="_blank" rel="noopener" style="text-decoration: none; color: inherit;">
-        <div class="cover">${cover}</div>
-        <div class="info">
-          <strong>${name}</strong>
-          <span class="artist">${artist}</span>
-        </div>
-      </a>`;
-  }).join('');
-  bindCursorHovers();
-  bindSounds();
-}
-
-let currentArtistKey = null;
-
-async function fetchLastFm() {
-  try {
-    const res = await fetch(LASTFM_BACKEND);
-    if (!res.ok) throw new Error('backend ' + res.status);
-    const data = await res.json();
-    const recent = Array.isArray(data?.recent) ? data.recent : [];
-    const nowPlayingTrack = data?.nowPlaying || null;
-    const current = nowPlayingTrack || recent[0];
-
-    if (!current) {
-      npLabel.textContent = 'NO_DATA';
-      npTrack.textContent = '[ silent · no signal ]';
-      npTrack.classList.add('placeholder');
-      npIndicator.style.opacity = '0.25';
-      setCover('');
-      renderArtistInfo(null);
-      currentArtistKey = null;
-      renderRecent([]);
-      return;
-    }
-
-    const isNowPlaying = !!nowPlayingTrack;
-    const name = current.name || '?';
-    const artist = current.artist || '?';
-    npLabel.textContent = isNowPlaying ? 'NOW_PLAYING' : 'LAST_PLAYED';
-    npTrack.textContent = `${name} · ${artist}`;
-    npTrack.classList.remove('placeholder');
-    npIndicator.style.opacity = isNowPlaying ? '1' : '0.35';
-
-    setCover(current.image || '');
-
-    if (artist !== currentArtistKey) {
-      currentArtistKey = artist;
-      renderArtistInfo(current.artistInfo || null);
-    }
-
-    const recentList = isNowPlaying ? recent.slice(0, 4) : recent.slice(1, 5);
-    renderRecent(recentList);
-  } catch (e) {
-    npLabel.textContent = 'OFFLINE';
-    npTrack.textContent = '[ no signal ]';
-    npTrack.classList.add('placeholder');
-    npIndicator.style.opacity = '0.25';
-    setCover('');
-    renderArtistInfo(null);
-    currentArtistKey = null;
-    recentTracksEl.innerHTML = '<div class="fav placeholder">[ offline ]</div>';
-  }
-}
-
-fetchLastFm();
-setInterval(fetchLastFm, 30_000);
-
-/* ===== STAMPS =====
-   88x31 buttons. Paste URLs below. Each entry:
-   { img: 'image url', href: 'link target', title: 'tooltip' }
-   `href` is optional — omit for non-clickable stamps.
-============================================================== */
-const STAMPS = [
-  // { img: 'https://example.com/button.gif', href: 'https://example.com/', title: 'example' },
-];
-
-const stampsGrid = document.getElementById('stamps-grid');
-function renderStamps() {
-  if (!STAMPS.length) {
-    stampsGrid.innerHTML = '<span class="placeholder">[ no stamps yet ]</span>';
-    return;
-  }
-  stampsGrid.innerHTML = STAMPS.map(s => {
-    const img = escapeHtml(s.img || '');
-    const href = s.href ? escapeHtml(s.href) : '';
-    const title = escapeHtml(s.title || '');
-    const inner = `<img src="${img}" alt="${title}" title="${title}" loading="lazy" onerror="this.parentElement.classList.add('broken'); this.replaceWith(document.createTextNode('[BROKEN]'));">`;
-    return href
-      ? `<a class="stamp" href="${href}" target="_blank" rel="noopener" title="${title}">${inner}</a>`
-      : `<span class="stamp" title="${title}">${inner}</span>`;
-  }).join('');
-  bindCursorHovers();
-  bindSounds();
-}
-renderStamps();
 
 /* ===== HIT COUNTER (using counterapi.dev — free, no signup) ===== */
 const hitCountEl = document.getElementById('hit-count');
