@@ -59,12 +59,15 @@
   .cursor-reticle {
     position: fixed;
     top: 0; left: 0;
-    width: 28px; height: 28px;
+    width: 34px; height: 34px;
     pointer-events: none;
     z-index: 9999;
     transform: translate(-50%, -50%);
     mix-blend-mode: difference;
-    transition: width 0.15s ease, height 0.15s ease;
+    border: 1px solid var(--cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--cyan-glow), inset 0 0 8px rgba(0, 229, 255, 0.12);
+    transition: width 0.15s ease, height 0.15s ease, border-color 0.15s ease;
   }
 
   .cursor-reticle::before,
@@ -112,8 +115,35 @@
   .cursor-reticle .br.bl { bottom: 0; left: 0; border-right: none; border-top: none; }
   .cursor-reticle .br.brc { bottom: 0; right: 0; border-left: none; border-top: none; }
 
-  .cursor-reticle.hover { width: 40px; height: 40px; }
+  .cursor-reticle .ring {
+    position: absolute;
+    inset: 5px;
+    border: 1px dashed var(--magenta);
+    border-radius: 50%;
+    opacity: 0.75;
+    animation: cursorSpin 5s linear infinite;
+  }
+
+  .cursor-reticle .label {
+    position: absolute;
+    top: 38px;
+    left: 18px;
+    color: var(--cyan);
+    font-family: var(--mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    opacity: 0.7;
+    text-shadow: 0 0 5px var(--cyan-glow);
+  }
+
+  .cursor-reticle.hover { width: 46px; height: 46px; border-color: var(--magenta); }
   .cursor-reticle.hover .br { opacity: 1; }
+  .cursor-reticle.hover .label { color: var(--magenta); opacity: 1; }
+
+  @keyframes cursorSpin {
+    to { transform: rotate(360deg); }
+  }
 
   @media (hover: none) {
     html, body { cursor: auto; }
@@ -905,6 +935,95 @@
   aside .status-box .ok { color: var(--green); }
   aside .status-box .warn { color: var(--amber); }
 
+  .sector-status {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid var(--border-cy);
+    background: rgba(0, 229, 255, 0.025);
+    font-size: 0.68rem;
+  }
+
+  .sector-status .status-title {
+    margin-bottom: 8px;
+    color: var(--cyan);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .sector-status .sector-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 4px 0;
+    border-bottom: 1px dashed rgba(166, 77, 255, 0.2);
+  }
+
+  .sector-status .sector-line:last-child { border-bottom: none; }
+  .sector-status .sector-id { color: var(--ink-faint); }
+  .sector-status .sector-state { color: var(--green); }
+  .sector-status .sector-state.warn { color: var(--amber); }
+  .sector-status .sector-state.alert { color: var(--red); }
+
+  .koi-fish {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    color: var(--amber);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+  }
+
+  .koi-fish svg {
+    width: 52px;
+    height: 30px;
+    overflow: visible;
+    animation: koiSwim 4s ease-in-out infinite;
+    cursor: pointer;
+  }
+
+  .koi-fish .body { fill: #f4e8d0; stroke: var(--amber); stroke-width: 1.5; }
+  .koi-fish .marking { fill: var(--magenta); }
+  .koi-fish .fin { fill: #ffb547; stroke: #ff8a3d; stroke-width: 1; }
+  .koi-fish .tail-veil { fill: var(--magenta); opacity: 0.35; stroke: var(--magenta); stroke-width: 0.8; }
+  .koi-fish .tail { transform-origin: 25px 26px; animation: tailWave 1.8s ease-in-out infinite; }
+  .koi-fish .stripe { fill: none; stroke: #ff8a3d; stroke-width: 1.5; opacity: 0.8; }
+  .koi-fish .eye { fill: var(--bg-0); }
+  .koi-fish .bubble { fill: none; stroke: var(--cyan); stroke-width: 1; opacity: 0.7; animation: bubbleRise 3s ease-in-out infinite; }
+  .koi-fish .status { color: var(--cyan); }
+
+  @keyframes koiSwim {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(5px); }
+  }
+
+  @keyframes bubbleRise {
+    0%, 100% { transform: translate(0, 2px); opacity: 0.25; }
+    50% { transform: translate(-2px, -2px); opacity: 0.85; }
+  }
+
+  @keyframes tailWave {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(5deg); }
+  }
+
+  .koi-fish svg.adventure {
+    position: fixed;
+    z-index: 10001;
+    margin: 0;
+    animation: fishAdventure 3.8s cubic-bezier(.2, .8, .3, 1) forwards;
+    pointer-events: none;
+  }
+
+  @keyframes fishAdventure {
+    0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    18% { transform: translate(18vw, -14vh) rotate(-12deg) scale(1.1); }
+    42% { transform: translate(58vw, 8vh) rotate(10deg) scale(0.95); }
+    68% { transform: translate(34vw, 58vh) rotate(-8deg) scale(1.15); }
+    84% { transform: translate(-12vw, 34vh) rotate(14deg) scale(0.9); }
+    100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+  }
+
   /* ========== Footer ========== */
   footer {
     grid-column: 1 / -1;
@@ -1129,10 +1248,12 @@
 
 <!-- Custom cursor -->
 <div class="cursor-reticle" id="cursor">
+  <span class="ring"></span>
   <div class="br tl"></div>
   <div class="br tr"></div>
   <div class="br bl"></div>
   <div class="br brc"></div>
+  <span class="label">TARGET: NONE</span>
 </div>
 <div class="cursor-dot" id="cursor-dot"></div>
 
@@ -1330,6 +1451,31 @@
       <div><span class="ok">[OK]</span> gh-pages</div>
       <div><span class="ok">[OK]</span> dns</div>
       <div><span class="warn">[--]</span> last_sync</div>
+      <div class="koi-fish" role="button" tabindex="0" aria-label="the fish. click to make it swim around">
+        <svg viewBox="0 0 88 52" aria-hidden="true">
+          <circle class="bubble" cx="19" cy="9" r="3" />
+          <circle class="bubble" cx="12" cy="4" r="1.5" />
+          <path class="fin tail" d="M28 26C20 15 10 5 0 1c5 14 9 20 18 25C9 31 5 40 0 51c13-4 23-14 28-24Z" />
+          <path class="tail-veil tail" d="M27 26C18 20 8 18 0 13c7 11 9 14 1 25 11-4 20-8 26-11Z" />
+          <ellipse class="body" cx="50" cy="26" rx="29" ry="15" />
+          <path class="fin" d="M40 12 48 2l5 14M42 39l8 11 4-15M59 37l10 8-2-13" />
+          <ellipse class="marking" cx="31" cy="22" rx="8" ry="6" />
+          <ellipse class="marking" cx="47" cy="31" rx="6" ry="4" />
+          <circle class="marking" cx="64" cy="25" r="6" />
+          <path class="stripe" d="M37 13c3 5 3 20 0 26M54 12c-3 6-3 20 0 28" />
+          <path class="stripe" d="M25 26 5 8M25 27 5 44M26 26 2 19M26 27 2 35" />
+          <circle class="eye" cx="73" cy="22" r="2.2" />
+        </svg>
+        <span>the fish // <span class="status" id="fish-status">swimming</span></span>
+      </div>
+    </div>
+
+    <div class="sector-status">
+      <div class="status-title">// sector_status</div>
+      <div class="sector-line"><span class="sector-id">SECTOR_01</span><span class="sector-state">ONLINE</span></div>
+      <div class="sector-line"><span class="sector-id">SECTOR_03</span><span class="sector-state alert">WATCHED</span></div>
+      <div class="sector-line"><span class="sector-id">SECTOR_04</span><span class="sector-state warn">ARCHIVED</span></div>
+      <div class="sector-line"><span class="sector-id">SECTOR_07</span><span class="sector-state">YOU ARE HERE</span></div>
     </div>
 
     <div class="mood-box">
@@ -1715,6 +1861,42 @@ function applyCurrentThought() {
 
 applyCurrentThought();
 
+const fishStatuses = [
+  'swimming',
+  'staring at you',
+  'overthrowing the government',
+  'thinking about bubbles',
+  'avoiding sector_3',
+  'under investigation',
+  'requesting snacks',
+  'doing absolutely nothing'
+];
+
+const fish = document.querySelector('.koi-fish');
+const fishSvg = fish.querySelector('svg');
+document.getElementById('fish-status').textContent = fishStatuses[Math.floor(Math.random() * fishStatuses.length)];
+
+function sendFishSwimming() {
+  if (fishSvg.classList.contains('adventure')) return;
+  const start = fishSvg.getBoundingClientRect();
+  fishSvg.style.left = `${start.left}px`;
+  fishSvg.style.top = `${start.top}px`;
+  fishSvg.classList.add('adventure');
+  fishSvg.addEventListener('animationend', () => {
+    fishSvg.classList.remove('adventure');
+    fishSvg.style.left = '';
+    fishSvg.style.top = '';
+  }, { once: true });
+}
+
+fish.addEventListener('click', sendFishSwimming);
+fish.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    sendFishSwimming();
+  }
+});
+
 const moodValueEl  = document.getElementById('mood-value');
 const moodSinceEl  = document.getElementById('mood-since');
 const moodSinceTag = document.getElementById('mood-since-tag');
@@ -1896,6 +2078,7 @@ h1.addEventListener('mouseleave', () => h1.classList.remove('glitch'));
 /* ===== CUSTOM CURSOR ===== */
 const cursor = document.getElementById('cursor');
 const cursorDot = document.getElementById('cursor-dot');
+const cursorLabel = cursor.querySelector('.label');
 let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
 let dotX = mouseX, dotY = mouseY;
 
@@ -1916,9 +2099,20 @@ animateDot();
 
 // hover state on interactive elements
 const hoverables = 'a, button, .project, .portal, .ctrl-btn, .time-indicator, [role="button"]';
+function setCursorTarget(el) {
+  const target = el.getAttribute('aria-label') || el.getAttribute('title') || el.textContent.trim().split('\n')[0];
+  cursorLabel.textContent = `TARGET: ${target.slice(0, 20).toUpperCase() || 'UNKNOWN'}`;
+}
+
 document.querySelectorAll(hoverables).forEach(el => {
-  el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-  el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+  el.addEventListener('mouseenter', () => {
+    cursor.classList.add('hover');
+    setCursorTarget(el);
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.classList.remove('hover');
+    cursorLabel.textContent = 'TARGET: NONE';
+  });
 });
 
 // re-run binding after dynamic content loads
@@ -1926,8 +2120,14 @@ function bindCursorHovers() {
   document.querySelectorAll(hoverables).forEach(el => {
     if (el._cursorBound) return;
     el._cursorBound = true;
-    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    el.addEventListener('mouseenter', () => {
+      cursor.classList.add('hover');
+      setCursorTarget(el);
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.classList.remove('hover');
+      cursorLabel.textContent = 'TARGET: NONE';
+    });
   });
 }
 
